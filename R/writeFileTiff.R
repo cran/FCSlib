@@ -7,7 +7,7 @@
 #' @param file.name Either the name of the file or the name of a raw vector.
 #' @param invert If set to TRUE then the order of the data will be reversed. Default TRUE.
 #' @param bits.per.sample Number of bits per sample (numeric scalar). Supported values in this version are 8, 16, and 32.
-#' @details Create a TIFF file using writeTIFF, converting a 2D-array. If the file contains multiple pages, a 3D-array is turned into an array to implement the aforementioned function.
+#' @details Create a TIFF file using writeTIFF, converting a 2D-array. If the file contains multiple pages, a 3D-array is turned into a 2D-array to implement the aforementioned function.
 #' @export
 #' @import tiff
 #' @return None.

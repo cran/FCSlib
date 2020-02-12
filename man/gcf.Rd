@@ -21,7 +21,7 @@ gcf(x, y, xmean = 1, ymean = 1, c = 0)
 G   A numerical signal with dimension N' x M' x Z'
 }
 \description{
-Performs either the auto-correlation, or cross-correlation between vectors x and y, returning a correlation function.
+Performs either the auto-correlation or cross-correlation between vectors x and y, returning a correlation function.
 }
 \details{
 The number of emission events per unit time is determined and used to generate autocorrelation and cross-correlation curves from the intensity traces F(t) and the fluctuations deltaF(t) = F(t)-<F(t)>.
@@ -35,14 +35,23 @@ G(tau) = (deltaF1(t) deltaF2(t+tau) )/(<F1(t)><F2(t)>),
 where xmean = <F1(t)> and ymean = <F2(t)> are the mean values of the fluorescent signals.
 }
 \examples{
+\donttest{
+# Load the FCSlib package
+
+library(FCSlib)
+
+# As an example, we will use data from experiment adquisition
+# of free Cy5 molecules diffusing in water at a concentration of 100 nM.
+
 oldpar <- par(no.readonly = TRUE)
-g <- gcf(x = Cy5_1nM$f, y = Cy5_1nM$f, xmean = mean(Cy5_1nM$f), ymean = mean(Cy5_1nM$f))
-len <- 1:length(g)
+g <- gcf(x = Cy5_100nM$f, y = Cy5_100nM$f, xmean = mean(Cy5_100nM$f), ymean = mean(Cy5_100nM$f))
+length <- 1:length(g)
 par(mfrow=c(1,1))
-plot(y = g, x = Cy5_1nM$t[len], log = 'x', type = 'l',
+plot(y = g, x = Cy5_100nM$t[length], log = 'x', type = 'l',
 xlab = expression(tau(mu~s)), ylab = expression(G(tau)),
-main = "Cy5 in 1nM")
+main = "Cy5 100nM")
 par(oldpar)
+}
 }
 \references{
 Siegel, A. P., Hays, N. M., & Day, R. N. (2013). Unraveling transcription factor interactions with heterochromatin protein 1 using fluorescence lifetime imaging microscopy and fluorescence correlation spectroscopy. Journal of biomedical optics, 18(2), 025002.

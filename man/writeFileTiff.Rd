@@ -22,7 +22,7 @@ None.
 Create a TIFF file from a 3D-array.
 }
 \details{
-Create a TIFF file using writeTIFF, converting a 2D-array. If the file contains multiple pages, a 3D-array is turned into an array to implement the aforementioned function.
+Create a TIFF file using writeTIFF, converting a 2D-array. If the file contains multiple pages, a 3D-array is turned into a 2D-array to implement the aforementioned function.
 }
 \examples{
 imagsave <- array(data = 1:10, dim = c(100,100,10))

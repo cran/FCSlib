@@ -1,6 +1,6 @@
 #' @title Fluorescence Correlation Spectroscopy
 #' 
-#' @description Performs either the auto-correlation, or cross-correlation between vectors x and y, returning a correlation function.
+#' @description Calculates either the auto-correlation or cross-correlation between vectors x and y, returning a correlation function.
 #' @aliases fcs
 #' @usage fcs(x , y = NULL, nPoints = 25000, pcf = FALSE)
 #' @param x Numeric vector of length N.
@@ -24,19 +24,69 @@
 #' @author Raul Pinto Camara, Adan O. Guerrero
 #' 
 #' @seealso \code{\link{gcf}}
-#' @examples 
-#' ## Choose between these two Data Sets: Cy5_1nM, Cy5_10nM.
-#' ## These data sets are simulations of the molecular diffusion Cy5 in two distinct concentrations.
 #' 
-#' ##Here is the execution of the FCS method for the Cy5_1nM Data set
-#' g <- fcs(x = Cy5_1nM$f)
-#' len <- 1:length(g)
-#' oldpar <- par(no.readonly = TRUE)
-#' par(mfrow=c(1,1))
-#' plot(y = g, x = Cy5_1nM$t[len], log = 'x', type = 'l',
-#' xlab = expression(tau(mu~s)), ylab = expression(G(tau)), main = "Cy5 in 1nM")
-#' par(oldpar)
-
+#' @examples
+#' \donttest{
+#' ### Load the FCSlib package
+#' 
+#' library(FCSlib)
+#' 
+#' # As an example, we will use data from experiment adquisition
+#' # of free Cy5 molecules diffusing in water at a concentration of 100 nM.
+#' # Use readFileTiff() function to read the fcs data in TIFF format.
+#' 
+#' f<-readFileTiff("Cy5_100nM.tif")
+#' 
+#' ### Note that $f$ is a matrix of 2048 x 5000 x 1 dimentions.
+#' # This is due to the fact that this single-point FCS experimen twas collected
+#' # at intervals of 2048 points each, with an acquisition time of 2 mu s.
+#' # Let's now create a dataframe with the FCS data wich here-and-after will be called Cy5.
+#' 
+#' acqTime = 2E-6
+#' f<-as.vector(f)
+#' time <- (1:length(f))*acqTime
+#' Cy5<-data.frame(t = time, f)
+#' 
+#' ### The first 100 ms of the time series are:
+#' 
+#' plot(Cy5[1:5000,], type ="l", xlab = "t(s)", ylab ="Fluorescence Intensity", main = "Cy5")
+#' 
+#' # The fcs() function receives three parameters: 'x' (mandatory),
+#' # 'y'(optional) and 'nPoints' (optional), where x is the main signal to analyze,
+#' #  y is a secondary signal (for the case of cross-correlation instead of autocorrelation)
+#' # and nPoints is the final length of the calculated correlation curve.
+#' # This function divides the original N-size signal into sub-vectors with a size of nPoints*2.
+#' # Once all the sub-vectors are analyzed, these are then averaged.
+#' # To use the fcs() function type
+#' 
+#' g <- fcs(x = Cy5$f)
+#' 
+#' # The result of the function is assigned to the variable 'g',
+#' # which contains the autocorrelation curve
+#' 
+#' length <- 1:length(g)
+#' tau <-Cy5$t[length]
+#' G<-data.frame(tau,g)
+#' plot(G, log = "x", type = "l", xlab = expression(tau(s)), ylab = expression(G(tau)), main = "Cy5")
+#' 
+#' # It is important to remove the first point from the data,
+#' # where G(\tau=0) it is not properly computed
+#' 
+#' G<-G[-1,]
+#' plot(G, log = "x", type = "l", xlab = expression(tau(s)), ylab = expression(G(tau)), main = "Cy5")
+#' 
+#' # The variable 'nPoints' can be adjusted to better assess the transport phenomena
+#' # in study (i.e. free diffusion in three dimensions in the case of this example) and
+#' # for better understanding of the diffusive nature of the molecules.
+#' # In this example 'nPoints' will be set to 2048.
+#' 
+#' g <- fcs(x = Cy5$f,nPoints = 2048)
+#' length <- 1:length(g)
+#' tau <-Cy5$t[length]
+#' G<-data.frame(tau,g)
+#' G<-G[-1,]
+#' plot(G, log = "x", type = "l", xlab = expression(tau(s)), ylab = expression(G(tau)), main = "Cy5")
+#' }
 
 fcs <- function(x , y = NULL, nPoints = 25000, pcf = FALSE){
   if(is.null(y)){

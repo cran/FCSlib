@@ -1,7 +1,7 @@
 #' @title General Correlation Function
 
 #' @aliases gcf
-#' @description Performs either the auto-correlation, or cross-correlation between vectors x and y, returning a correlation function.
+#' @description Performs either the auto-correlation or cross-correlation between vectors x and y, returning a correlation function.
 #' @usage gcf(x, y, xmean = 1, ymean = 1, c = 0)
 #' @param x A numerical signal with dimensions M x N x Z.
 #' @param y A numerical signal with dimensions M x N x Z.
@@ -25,15 +25,25 @@
 #' @author Raul Pinto Camara.
 #' 
 #' @seealso \code{\link{fcs}}, \code{\link{convolve}}
+#' 
 #' @examples
+#' \donttest{
+#' # Load the FCSlib package
+#' 
+#' library(FCSlib)
+#' 
+#' # As an example, we will use data from experiment adquisition
+#' # of free Cy5 molecules diffusing in water at a concentration of 100 nM.
+#' 
 #' oldpar <- par(no.readonly = TRUE)
-#' g <- gcf(x = Cy5_1nM$f, y = Cy5_1nM$f, xmean = mean(Cy5_1nM$f), ymean = mean(Cy5_1nM$f))
-#' len <- 1:length(g)
+#' g <- gcf(x = Cy5_100nM$f, y = Cy5_100nM$f, xmean = mean(Cy5_100nM$f), ymean = mean(Cy5_100nM$f))
+#' length <- 1:length(g)
 #' par(mfrow=c(1,1))
-#' plot(y = g, x = Cy5_1nM$t[len], log = 'x', type = 'l',
+#' plot(y = g, x = Cy5_100nM$t[length], log = 'x', type = 'l',
 #' xlab = expression(tau(mu~s)), ylab = expression(G(tau)),
-#' main = "Cy5 in 1nM")
+#' main = "Cy5 100nM")
 #' par(oldpar)
+#' }
 
 gcf <- function(x, y, xmean = 1, ymean = 1, c = 0){
   N <- length(x)

@@ -21,7 +21,7 @@ Reads a TIFF file and converts it into a 2D-array. If the file contains multiple
 Read a TIFF file image using readTIFF and converts it to a matrix with n-dimensions.
 }
 \note{
-This function must been used in order to use the rest of the functions in this package. The tiff file must be grayscale.
+This function must be used in order to extract the information from the TIFF files needed to test the functions in this package. The TIFF file must be grayscale.
 }
 \examples{
 \donttest{

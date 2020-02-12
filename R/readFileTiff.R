@@ -6,7 +6,7 @@
 #' @param filename Either name of the file to read from or a raw vector representing the TIFF file content.
 #' @param invert If set to TRUE then the order of the data will be reversed. Default TRUE.
 #' @details Read a TIFF file image using readTIFF and converts it to a matrix with n-dimensions.
-#' @note This function must been used in order to use the rest of the functions in this package. The tiff file must be grayscale.
+#' @note This function must be used in order to extract the information from the TIFF files needed to test the functions in this package. The TIFF file must be grayscale.
 #' 
 #' @export
 #' @import tiff
@@ -14,6 +14,7 @@
 #' @author Adan O. Guerrero Cardenas.
 #' 
 #' @seealso \code{\link{readTIFF}} \code{\link{writeFileTiff}}
+#' 
 #' @examples 
 #' \donttest{
 #' raw <- readFileTiff(FileName)

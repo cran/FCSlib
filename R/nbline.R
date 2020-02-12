@@ -1,57 +1,100 @@
 #' @title Number & Brightness (Single Image)
 #' 
-#' @description Performs the Number and Brightness Analysis (N&B) of a single image.
+#' @description Performs the Number and Brightness Analysis (N&B) on an image
 #' @aliases nbline
-#' @usage nbline(img, plot = TRUE)
+#' @usage nbline(img, sigma0 = 0, offset = 0, S = 1, wSigma = 0)
 #' @param img The image to analyze.
-#' @param plot by default True. This parameter allow to print the visual comparision of the Brightness and Number.
-#' @details The N&B method provides molecular concentration and brightness for each pixel of a single image.
-#' The average particle number and brightness are calculated directly from
-#' the mean value <k> and variance (sigma^2) of the fluorescence intensity data (image) for a given pixel as follows: 
+#' @param sigma0 Variance of the optical system readout noise
+#' @param offset Constant number that depends on the optical system configuration. Signal values smaller that the offset should be considered zero.
+#' @param S Proportionality factor S. Indicates the ratio between the amount inicident photons in the detector and those converted to an electronic signal.
+#' @param wSigma Time window at which the running average is calculated
+#' @details
+#' The Number and Brightness (N&B) method is a time-independent technique that provides an estimate of molecular concentration and aggregation state (or stoichiometry), based on the statistical moments of the fluorescence intensity fluctuations. In other words, this tool allows to distinguish between two or more homo-oligomeric states of a molecule present in a given region in the sample (Brightness) while also providing a direct indicator of the molecules relative abundance (Number).
+#' The intensity of the fluorescence signal is mostly due to the mere presence of fluorophores in the media, affected by the fluorophore quantum yield, the sensitivity of the detector and the photophysical characteristics of the optical instrumentation.
+#' The average particle number and brightness are calculated directly from the mean value <k> and variance (sigma^2) of the fluorescence intensity data (image) for a given pixel as follows: 
 #' N = (<k>^2)/(sigma^2)
 #' and
 #' B = (sigma^2)/<k>
-#' Leaving the plot parameter as True, the function will plot the two vectos in the same plot for a visual comparison, in addition to returning the two vectors.
 #' 
 #' @export
 #' @importFrom stats var
 #' @importFrom graphics axis mtext par
-#' @return Brightness Number   A list containing two vectors, the Brightness and the Number of the image.
+#' @return A list containing two vectors, the Brightness and the Number of the image.
 #' @author Raul Pinto Camara.
 #' 
 #' @seealso \code{\link{var}, \link{mean}}
 #' @examples
 #' 
-#' dmv2 <- data.matrix(v2DataSet)
-#' nb <- nbline(dmv2, plot = FALSE)
-#' oldpar <- par(no.readonly = TRUE)
+#' \donttest{
+#' ### Load the FCSlib package
+#' 
+#' library(FCSlib)
+#' 
+#' # As an example, we will use a data set that corresponds
+#' # to a population of Venus dimers and hexamers diffusing in HEK-293 cells.
+#' # Use the readFileTiff() function to extract the information from the '.tiff' files.
+#' 
+#' # rawtif <- "<path>/V2V6.tif"
+#' 
+#' V2V6 <- readFileTiff(rawtif)
+#' V2V6 <- V2V6[,,1]
+#' 
+#' # To compute the apparent Number and Brightness with the nbline() function, type:
+#' 
+#' nbv2v6 <- nbline(V2V6)
+#' pixelSize = 0.05
+#' r<- (1:dim(V2V6)[1])*pixelSize
 #' par(mar = c(5, 5, 3, 5))
-#' plot(nb$Brightness, type = 'l', col = "blue", ylab = "Brightness (Blue)", xlab = "Pixel")
-#' par(new=TRUE)
-#' plot(nb$Number, type = 'l', col = "red", xaxt = 'n', yaxt = 'n', ylab ="", xlab = "")
-#' axis(4)
-#' mtext("Number (Red)", side = 4, line = 2)
-#' par(oldpar)
+#' plot(nbv2v6$B~r, type = "l", col = "blue", axes = F, ann = F)
+#' mtext(side = 2, text = axTicks(2), at = axTicks(2), col = "blue", line = 1, las = 1)
+#' mtext(side = 2, text = "B", line = 3, col = "blue", las = 1)
+#' axis(1)
+#' mtext(side = 1, text = expression(r(mu*m)), line = 3, las = 1)
+#' par(new = T)
+#' plot(nbv2v6$N, type = "l", col = "red", axes = F, ann = F)
+#' mtext(side = 4, text = axTicks(4), at = axTicks(4), col = "red", line = 1, las = 1)
+#' mtext(side = 4, text = "N", line = 3, col = "red", las = 1)
+#'
+#' ### To compute the real Number $n$ and Brightness $e$ type:
+#' 
+#' par(mar = c(5, 5, 3, 5))
+#' nbv2v6 <- nbline(img = V2V6, S=3.5, sigma0 = 1,offset = 0)
+#' plot(nbv2v6$epsilon~r, type = "l", ylim = c(0,3), col = "blue", axes = F, ann = F)
+#' mtext(side = 2, text = axTicks(2), at = axTicks(2), col = "blue", line = 1, las = 1)
+#' mtext(side = 2, text = expression(epsilon), line = 3, col = "blue", las = 1)
+#' axis(1)
+#' mtext(side = 1, text = expression(r(mu*m)), line = 3, las = 1)
+#' par(new = T)
+#' plot(nbv2v6$n, type = "l", col = "red", ylim = c(0,30), axes = F, ann = F)
+#' mtext(side = 4, text = axTicks(4), at = axTicks(4), col = "red", line = 1, las = 1)
+#' mtext(side = 4, text = "n", line = 3, col = "red", las = 1)
+#' }
 
 
-nbline <- function(img, plot = TRUE){
-  oldpar <- par(no.readonly = TRUE)
-  on.exit(par(oldpar))
+nbline<-function (img, sigma0 = 0, offset = 0, S = 1, wSigma = 0) 
+{
+  w<-floor(wSigma/2 -0.5)
   di <- dim(img)
-  if(length(di) != 2){
+  if (length(di) != 2) {
     stop("'img' must be two dimensional")
   }
-  mn <- apply(img, MARGIN = 1, mean, na.rm = T)
-  vr <- apply(img, MARGIN = 1, var, na.rm = T)
-  pB <- vr/mn
-  pV <- (mn^2)/vr
-  if(plot){
-    par(mar = c(5, 5, 3, 5))
-    plot(pB, type = 'l', col = "blue", ylab = "Brightness (Blue)", xlab = "Pixel")
-    par(new=T)
-    plot(pV, type = 'l', col = "red", xaxt = 'n', yaxt = 'n', ylab ="", xlab = "")
-    axis(4)
-    mtext("Number (Red)", side = 4, line = 2)
+  mn<-vr<-NULL
+  if(wSigma == 0){
+    mn <- apply(img, MARGIN = 1, mean, na.rm = T)
+    vr <- apply(img, MARGIN = 1, var, na.rm = T)
+  } else{
+    for (r in (w + 1):(di[2] - w)){
+      mn <- cbind(mn,apply(img[,(r-w):(r+w)], MARGIN = 1, mean, na.rm = T))
+      vr <- cbind(vr, apply(img[,(r-w):(r+w)], MARGIN = 1, var, na.rm = T))
+    }
   }
-  return(list("Brightness" = pB, "Number" = pV))
+  if(S == 1){
+    B <- vr/mn
+    N <- (mn^2)/vr
+    return(list(Brightness = B, ApparentNumber = N))
+  } else{
+    epsilon <- (vr -sigma0 -S*(mn - offset))/(S*(mn - offset))
+    n <-  ((mn - offset)^2)/(vr -sigma0 -S*(mn - offset))
+    return(list(brightness = epsilon, number = n))
+  }
 }

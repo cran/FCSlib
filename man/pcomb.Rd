@@ -32,12 +32,17 @@ The resulting intensity fluctuations, pCF, are transformed into brightness fluct
 If the pcf is set as FALSE the pComb data will not be generated and will be NULL. In order to generate that data the pcf function must be used on the BCarpet data.
 }
 \examples{
-# Pair Correlation Function Autocorrelacion no pcf analysis
-dmv2 <- data.matrix(v2DataSet)
-pC <- pcomb(dmv2[1:32,1:2001], nPoints = 1000, type = 'd', dr = 10, w = 2, pcf = FALSE)
-
 \donttest{
-# Pair Correlation Function Autocorrelacion with pcf analysis
+### Load the FCSlib package
+
+library(FCSlib)
+
+# As an example, we will use a data set that corresponds to a population of Venus dimers
+# diffusing in HEK-293 cells. Use the readFileTiff() function to extract the information
+# from the '.tiff' files.
+
+dmv2 <- data.matrix(V2)
+pC <- pcomb(dmv2[1:32,1:2001], nPoints = 1000, type = 'd', dr = 10, w = 2, pcf = FALSE)
 dmv2 <- data.matrix(v2DataSet)
 pC <- pcomb(dmv2, nPoints = 5000, type = 'd', dr = 10, w = 100)
 di <- dim(pC$pComb)

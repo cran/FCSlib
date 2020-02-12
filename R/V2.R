@@ -8,8 +8,8 @@
 #'
 #' @docType data
 #' @keywords datasets
-#' @name v2DataSet
-#' @usage data(v2DataSet)
-#' @format A data frame with 64 rows and 20000 columns
+#' @name V2
+#' @usage data(V2)
+#' @format A data frame with 64 rows and 25000 columns
 #' @details In order to use the data in pcfData, the data.matrix() must be used to transform the data set into a matrix, and can be used in the examples.
 NULL

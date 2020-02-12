@@ -25,26 +25,74 @@ A nls object (from nls).
 Estimates the parameters based on a given equation, on the data generated with the fcs() function.
 }
 \details{
-The autocorrelation function contains information about the molecular diffusion coefficient and the number of molecules occupying the observation volume. To interpret such data in molecular terms we need a model to describe the fluctuations. The model of free diffusion in three dimensions:
-G(tau)=G(0)((1+(tau/tau_D))^(-1))(1+((s/u)^2)(tau/tau_D))^(-1/2), with tau_D=(s^2)/4D
-where tau_D is the diffusion time, s is the radius and u = ks.
-So, if "D3D" is selected, the variables that should be considered are G (resulting value of the fcs function), tau the vector of time in the correlation function, s the PSF (Point Spread Function) radius, k the scalar factor between the radius half-length of the PSF, D is the diffusion coefficent and the G(0) is inversely proportional to the molecular concentration.
+A transport model, containing physical information about the diffusive nature of the fluorophores, can be fitted to the autocorrelation data to obtain parameters such as the diffusion coeficient D and the number of molecules within the observation volume N.
+
+The fitFCS() function uses the 'Non-linear Least Squares' function to fit a physical model into a data set. There are four possible models to be fit:
+
+"D2D" for two-dimensional diffusion
+
+"D2DT" for two-dimensional diffusion with triplet state
+
+"D3D" for three-dimensional diffusion
+
+"D3DT" for three-dimensional diffusion with triplet state
+
+Inside the equations for each model, gamma a geometric factor that depends on the illumination profile. For confocal excitation its magnitude approaches gamma = 1/sqrt8 ??? 0.35 fl. The diffusion time is defined as tau_D = s^2/4D, where s and u are the radius and the half-length of the focal volume, respectively. The parameter u is usually expressed as u = ks, with k being the eccentricity of the focal volume; for confocal excitation k ??? 3. The fraction of molecules in the triplet state is B, and tau_B is a time constant for the triplet state.
 }
 \examples{
-g <- fcs(x = Cy5_1nM$f)
+\donttest{
+# Load the FCSlib package
+
+library(FCSlib)
+
+g <- fcs(x = Cy5_100nM$f,nPoints = 2048)
 len <- 1:length(g)
+tau <-Cy5_100nM$t[len]
+G<-data.frame(tau,g)
+G<-G[-1,]
 
-df <- data.frame(g = g, tau = Cy5_1nM$t[len], s = 0.25, k = 3)
+# Once the correlation curve 'g' has been generated,
+# a data frame containing known parameters must be then defined
+
+df<-data.frame(G, s = 0.27, k = 3)
+head(df)
+
+# The radius of the focal volume must computed experimentally.
+# For this example, we choose a s = 0.27~ mu m
+# Then, three lists that contain the initial values of the data,
+# as well as the upper and lower limits of these values, must be defined.
+# The input values here are the expected values for the real experimental data
+# to be very similar or close to, so that the function calculates them accurately.
+# Initial values:
+
 start <- list(D = 100, G0 = 0.1)
+up <- list(D = 1E3, G0 = 10)
 low <- list(D = 1E-1, G0 = 1E-2)
-up  <- list(D = 500, G0 = 100)
 
-modelFCS <- fitFCS(data = df, start = start, low = low, up = up, type = "D3D")
-fit <- predict(modelFCS, list(tau = Cy5_1nM$t[len]))
+# Once the known parameters are defined, we now proceed to use the fitFCS() function.
+# The result will be a nls object
 
-plot(y = g, x = Cy5_1nM$t[len], log = 'x', type = 'l', xlab = expression(tau(mu~s)),
-ylab = expression(G(tau)), main = "Symulation of Cy5 [1nM]")
-lines(fit~Cy5_1nM$t[len], col = "blue")
+modelFCS <- fitFCS(df, start, low, up, type = "D3D", trace = F)
+# summary(modelFCS)
+
+# By using the predict() function, the object generated in the previous step
+# is transformed into a vector that contains the curve fitted by the desired model.
+
+fit <- predict(modelFCS, tau)
+
+# Finally, use the following command to obtain the resulting graph,
+# where the blue line corresponds to the fitted data and the black surface
+# corresponds to the unfitted
+
+plot (G, log = "x", type = "l", xlab = expression(tau(s)),
+      ylab = expression(G(tau)), main = "Cy5")
+lines(fit~G$tau, col = "blue")
+
+# To acquire access to the physical coefficients of the model type
+
+s<-summary(modelFCS)
+s$coefficients[,1]
+}
 }
 \seealso{
 \code{\link{nls}}, \code{\link{fcs}}
