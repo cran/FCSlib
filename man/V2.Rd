@@ -4,7 +4,9 @@
 \name{V2}
 \alias{V2}
 \title{Experimental data of Venus dimers dynamics in HEK-293 cells.}
-\format{A data frame with 64 rows and 25000 columns}
+\format{
+A data frame with 64 rows and 25000 columns
+}
 \usage{
 data(V2)
 }

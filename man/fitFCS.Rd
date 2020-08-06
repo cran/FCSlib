@@ -4,7 +4,8 @@
 \alias{fitFCS}
 \title{Fitting FCS Data}
 \usage{
-fitFCS(data = parent.frame(), start, low = -Inf, up = Inf, type = "D3D", trace = TRUE)
+fitFCS(data = parent.frame(), start, low = -Inf, up = Inf,
+              type = "D3D",model = NULL, trace = TRUE)
 }
 \arguments{
 \item{data}{data frame in which to evaluate the variables in formula and weights.}
@@ -14,7 +15,10 @@ fitFCS(data = parent.frame(), start, low = -Inf, up = Inf, type = "D3D", trace =
 \item{low, up}{a named list or named numeric vector of lower and upper bounds, replicated to be as long as start. If unspecified, all parameters are assumed to be -Inf and Inf.}
 
 \item{type}{specification for the equation to model, is a character string. The default value is "D3D" equation for three-dimensional free diffusion.
-Another possibles values are: "D2D" for two-dimensional free diffusion,  "D2DT" for two-dimensional free diffusion with triplet exited state, and "D3DT" for three-dimensional free diffusion with triplet exited state.}
+Another possibles values are: "D2D" for two-dimensional free diffusion,  "D2DT" for two-dimensional free diffusion with triplet exited state, and "D3DT" for three-dimensional free diffusion with triplet exited state
+and "Custom" that allow to send a customized equation to model.}
+
+\item{model}{a character type variable, that must contain the custom equation if needed, NULL by default.}
 
 \item{trace}{logical value that indicates whether the progress of the non-linear regression (nls) should be printed.}
 }

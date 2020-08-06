@@ -4,7 +4,9 @@
 \name{Cy5_100nM}
 \alias{Cy5_100nM}
 \title{Experimental data of free Cy5 molecules diffusing in water at a concentration of 100 nM.}
-\format{A data frame with 50000 rows and 2 variables}
+\format{
+A data frame with 50000 rows and 2 variables
+}
 \usage{
 data(Cy5_100nM)
 }

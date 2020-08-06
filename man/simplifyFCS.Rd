@@ -4,12 +4,14 @@
 \alias{simplifyFCS}
 \title{Simplify FCS}
 \usage{
-simplifyFCS(g, tau)
+simplifyFCS(g, tau, step = 1)
 }
 \arguments{
 \item{g}{A vector containing the FCS data analysis}
 
 \item{tau}{A vector that represents the time frame between data acquisitions}
+
+\item{step}{A numeric value that affects the final length of the vector}
 }
 \value{
 A vector of the FCS data with reduced length
@@ -28,14 +30,19 @@ f <- as.vector(f)
 time <- (1:length(f))*acqTime
 cy5 <- data.frame(t = time, f)
 
+g <- fcs(x = cy5$f)
 len <- 1:length(g)
 tau <-cy5$t[len]
-G <- data.frame(tau,g)#' g <- fcs(x = cy5$f)
+G <- data.frame(tau,g)
 
-sfcs <- simplifyFCS(G$g, G$tau)
-plot(df$g~df$tau, log = "x", type = "l",
+sfcs <- simplifyFCS(G$g, G$tau, step = 0.5)
+plot(sfcs$g~sfcs$tau, log = "x", type = "l",
      xlab = expression(tau(s)),
      ylab = expression(G(tau)), main = "Cy5")
+
+# Comparison, original with simplify
+plot(G, type = 'l', log = 'x')
+lines(sfcs$g~sfcs$tau, col = "red")
 }
 }
 \seealso{
