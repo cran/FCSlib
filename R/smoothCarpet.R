@@ -12,7 +12,7 @@
 #' @export
 #' @importFrom stats smooth.spline
 #' @return Smooth Carpet   A smooth image.
-#' @author Raul Pinto Camara.
+#' @author Raúl Pinto Cámara.
 #' 
 #' @seealso \code{\link{pcomb}, \link{smooth.spline}}
 #' 

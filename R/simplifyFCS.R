@@ -6,7 +6,8 @@
 #' @param g A vector containing the FCS data analysis
 #' @param tau A vector that represents the time frame between data acquisitions
 #' @param step A numeric value that affects the final length of the vector
-#' @details Allows to significantly reduce the points of the autocorrelation vector, maintaining its overall structure and allowing to further adjust physical models while obtaining consistent results.
+#' @details The simplifyFCS function performs a log10 weighted binning of the autocorrelation function (acf). It balance the weight of the long-time scale trending behavior of the acf curve, which commonly contain G(tau) points that fluctuate around the zero-correlation regime, hence overweighting fitting with ‘noisy data’. simplifyFCS reduce the weight of the long-time scale trending behavior (ms to sec), preserving the structure of the short-time scales.
+#' @note the step parameter must be between 0 and 1
 #' @export 
 #' @return A vector of the FCS data with reduced length
 #' @author Adan O. Guerrero
@@ -36,26 +37,31 @@
 #' lines(sfcs$g~sfcs$tau, col = "red")
 #' }
 
-simplifyFCS<-function(g, tau, step = 1){
-  if(!(length(g)==length(tau))){
-    stop("g and tau must the same length")
+simplifyFCS <- function (g, tau, step = 1) {
+  if (!(length(g) == length(tau))) {
+    stop("'g' and 'tau' must have the same length")
   }
-  if(!(step > 0 && step <= 1)){
-    stop("'step' must be greater than 0 and less or equal to 1")
+  if (!(step > 0 && step <= 1)) {
+    stop("'step' must be greater than 0 and smaller or equal to 1")
   }
   df <- data.frame(g, tau)
-  t1<-ceiling(log10(min(df$tau)))
-  t2<-ceiling(log10(max(df$tau)))
-  tR<-10^(t1:t2)
-  ts<-NULL; for (i in tR){ ts<-c(ts, (seq(2, 10, step))*i)}
-  s<-NULL
-  for(i in 1:length(ts)){
-    if(i==1) {
-      idx<-which(df$tau <= ts[i])
-      s<-df[idx,]
-    } else{
-      idx<-which(df$tau > ts[i-1] & df$tau <= ts[i])
-      if(length(idx)) s<-rbind(s,apply(df[idx,],MARGIN = 2, mean) ) 
+  t1 <- ceiling(log10(min(df$tau)))
+  t2 <- ceiling(log10(max(df$tau)))
+  tR <- 10^(t1:t2)
+  ts <- NULL
+  for (i in tR) {
+    ts <- c(ts, (seq(2, 10, step)) * i)
+  }
+  s <- NULL
+  for (i in 1:length(ts)) {
+    if (i == 1) {
+      idx <- which(df$tau <= ts[i])
+      s <- df[idx, ]
+    }
+    else {
+      idx <- which(df$tau > ts[i - 1] & df$tau <= ts[i])
+      if (length(idx)) 
+        s <- rbind(s, apply(df[idx, ], MARGIN = 2, mean))
     }
   }
   return(s)

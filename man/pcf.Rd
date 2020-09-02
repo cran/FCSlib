@@ -4,14 +4,14 @@
 \alias{pcf}
 \title{Pair Correlation Function}
 \usage{
-pcf(img, nPoints = 1000, type = "d", dr = 1)
+pcf(img, nPoints = 1000, one.col = FALSE, dr = 1)
 }
 \arguments{
 \item{img}{The image to analyze}
 
 \item{nPoints}{The size of the sub-vectors in which the input vectors will be divided. This number must be less than N/2.}
 
-\item{type}{Possible values are 'l' and 'c'. Set to 'l' by default}
+\item{one.col}{By default FALSE. If TRUE the correlation will be performed in the fixed colum mode, else the distance mode.}
 
 \item{dr}{Distance between pixel at which the correlation is calculated. For a value of delta_r = 3, the columns are correlated as follows: (1,4), (2,5), ..., (n-3, n), with n being the last column.}
 }
@@ -37,7 +37,7 @@ library(FCSlib)
 # from the '.tiff' files.
 
 dmv2 <- data.matrix(V2)
-pB <- pcf(dmv2, nPoints = 2500, dr = 10, type = 'd')
+pB <- pcf(dmv2, nPoints = 2500, dr = 10)
 
 ### Plot the result
 library(fields)
@@ -46,35 +46,11 @@ tau <- (1:(di[2]))
 image.plot( x = 1:di[1], y = log10(tau), z = pB, main = "Column Distance 10",
 xlab = "Pixel", ylab = "Logarithmic tau",
 cex.lab = 1.2, cex.main = 1.2, cex.axis = 1)
-
-### Pair Correlation Function (Autocorrelation mode)
-dmv2 <- data.matrix(v2DataSet)
-pB <- pcf(dmv2, nPoints = 5000, type = 'a')
-
-### Plot the result
-library("fields")
-di <- dim(pB)
-tau <- (1:(di[2]))
-image.plot( x = 1:di[1], y = log10(tau), z = pB, main = "Autocorrelation",
-xlab = "Pixel", ylab = "Logarithmic tau",
-cex.lab = 1.2, cex.main = 1.2, cex.axis = 1)
-
-### Pair Correlation Function (Fixed column mode)
-dmv2 <- data.matrix(v2DataSet)
-pB <- pcf(dmv2, nPoints = 5000, dr = 10, type = 'c')
-
-### Plot the result
-library("fields")
-di <- dim(pB)
-tau <- (1:(di[2]))
-image.plot( x = 1:di[1], y = log10(tau), z = pB, main = "Fixed Colum 10",
-xlab = "Pixel", ylab = "Logarithmic tau",
-cex.lab = 1.2, cex.main = 1.2, cex.axis = 1)
 }
 }
 \seealso{
 \code{\link{fcs}, \link{pcomb}}
 }
 \author{
-Raul Pinto Camara.
+Raúl Pinto Cámara.
 }

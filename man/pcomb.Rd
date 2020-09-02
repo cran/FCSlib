@@ -4,20 +4,18 @@
 \alias{pcomb}
 \title{Pair Correlation of Molecular Brightness}
 \usage{
-pcomb(img, nPoints = 25000, type = "d", dr = 1, w = 100, pcf = TRUE)
+pcomb(img, nPoints = 25000, one.col = FALSE, dr = 1, w = 100)
 }
 \arguments{
 \item{img}{The image to analyze.}
 
 \item{nPoints}{The size of the sub-vectors in which the input vectors will be divided. This number must be less than N/2.}
 
-\item{type}{By defautl 'd'. The possible values are 'd', 'a' and 'c'}
+\item{one.col}{By default FALSE. If TRUE the correlation will be performed in the fixed colum mode, else the distance mode.}
 
 \item{dr}{Is the distance between the two columns that will be correlated. For a value of deltar = 3, the columns are correlated as follows: (1,4), (2,5), ..., (n-3, n), with n as the last column.}
 
 \item{w}{Range value that is used to calculate the brightness in the image.}
-
-\item{pcf}{A boolean variable that determines whether the pcf analysis is performed on the brightness carpet or not.}
 }
 \value{
 A list containing the Brightness Carpet and the Pair Correlation of that carpet
@@ -59,5 +57,5 @@ cex.lab = 1.2, cex.main = 1.2, cex.axis = 1)
 \code{\link{fcs}, \link{pcf}}
 }
 \author{
-Raul Pinto Camara.
+Raúl Pinto Cámara.
 }

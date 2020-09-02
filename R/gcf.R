@@ -22,7 +22,7 @@
 #' @importFrom stats convolve
 #' @return G   A numerical signal with dimension N' x M' x Z'
 #' @references Siegel, A. P., Hays, N. M., & Day, R. N. (2013). Unraveling transcription factor interactions with heterochromatin protein 1 using fluorescence lifetime imaging microscopy and fluorescence correlation spectroscopy. Journal of biomedical optics, 18(2), 025002.
-#' @author Raul Pinto Camara.
+#' @author Raúl Pinto Cámara.
 #' 
 #' @seealso \code{\link{fcs}}, \code{\link{convolve}}
 #' 
@@ -36,10 +36,10 @@
 #' # of free Cy5 molecules diffusing in water at a concentration of 100 nM.
 #' 
 #' oldpar <- par(no.readonly = TRUE)
-#' g <- gcf(x = Cy5_100nM$f, y = Cy5_100nM$f, xmean = mean(Cy5_100nM$f), ymean = mean(Cy5_100nM$f))
+#' g <- gcf(x = Cy5$f, y = Cy5$f, xmean = mean(Cy5$f), ymean = mean(Cy5$f))
 #' length <- 1:length(g)
 #' par(mfrow=c(1,1))
-#' plot(y = g, x = Cy5_100nM$t[length], log = 'x', type = 'l',
+#' plot(y = g, x = Cy5$t[length], log = 'x', type = 'l',
 #' xlab = expression(tau(mu~s)), ylab = expression(G(tau)),
 #' main = "Cy5 100nM")
 #' par(oldpar)

@@ -5,7 +5,7 @@
 \title{Fitting FCS Data}
 \usage{
 fitFCS(data = parent.frame(), start, low = -Inf, up = Inf,
-              type = "D3D",model = NULL, trace = TRUE)
+              type = "D3D", model = NULL, trace = TRUE)
 }
 \arguments{
 \item{data}{data frame in which to evaluate the variables in formula and weights.}
@@ -16,7 +16,7 @@ fitFCS(data = parent.frame(), start, low = -Inf, up = Inf,
 
 \item{type}{specification for the equation to model, is a character string. The default value is "D3D" equation for three-dimensional free diffusion.
 Another possibles values are: "D2D" for two-dimensional free diffusion,  "D2DT" for two-dimensional free diffusion with triplet exited state, and "D3DT" for three-dimensional free diffusion with triplet exited state
-and "Custom" that allow to send a customized equation to model.}
+and D3D2S for two species in three-dimensional free diffusion.}
 
 \item{model}{a character type variable, that must contain the custom equation if needed, NULL by default.}
 
@@ -49,7 +49,7 @@ Inside the equations for each model, gamma a geometric factor that depends on th
 
 library(FCSlib)
 
-g <- fcs(x = Cy5_100nM$f,nPoints = 2048)
+g <- fcs(x = Cy5$f,nPoints = 2048)
 len <- 1:length(g)
 tau <-Cy5_100nM$t[len]
 G<-data.frame(tau,g)
@@ -102,5 +102,5 @@ s$coefficients[,1]
 \code{\link{nls}}, \code{\link{fcs}}
 }
 \author{
-Raul Pinto Camara
+Raúl Pinto Cámara.
 }

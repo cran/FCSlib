@@ -20,7 +20,10 @@ A vector of the FCS data with reduced length
 Reduces the amount of data in a data set without altering its overall structure
 }
 \details{
-Allows to significantly reduce the points of the autocorrelation vector, maintaining its overall structure and allowing to further adjust physical models while obtaining consistent results.
+The simplifyFCS function performs a log10 weighted binning of the autocorrelation function (acf). It balance the weight of the long-time scale trending behavior of the acf curve, which commonly contain G(tau) points that fluctuate around the zero-correlation regime, hence overweighting fitting with ‘noisy data’. simplifyFCS reduce the weight of the long-time scale trending behavior (ms to sec), preserving the structure of the short-time scales.
+}
+\note{
+the step parameter must be between 0 and 1
 }
 \examples{
 \donttest{

@@ -4,7 +4,7 @@
 \alias{fcs}
 \title{Fluorescence Correlation Spectroscopy}
 \usage{
-fcs(x , y = NULL, nPoints = 25000, pcf = FALSE)
+fcs(x , y = NULL, nPoints, pcf = FALSE)
 }
 \arguments{
 \item{x}{Numeric vector of length N.}
@@ -69,7 +69,7 @@ plot(Cy5[1:5000,], type ="l", xlab = "t(s)", ylab ="Fluorescence Intensity", mai
 # Once all the sub-vectors are analyzed, these are then averaged.
 # To use the fcs() function type
 
-g <- fcs(x = Cy5$f)
+g <- fcs(x = Cy5$f, nPoints = length(Cy5$f)/2)
 
 # The result of the function is assigned to the variable 'g',
 # which contains the autocorrelation curve
@@ -106,5 +106,5 @@ Microscopy and imaging science: practical approaches to applied research and edu
 \code{\link{gcf}}
 }
 \author{
-Raul Pinto Camara, Adan O. Guerrero
+Raúl Pinto Cámara, Adan O. Guerrero
 }

@@ -2,12 +2,12 @@
 #' 
 #' @description Performs the Number and Brightness Analysis (N&B) on an image
 #' @aliases nbline
-#' @usage nbline(img, sigma0 = 0, offset = 0, S = 1, wSigma = 0)
+#' @usage nbline(img, sigma0 = 0, offset = 0, S = 1, w = 0)
 #' @param img The image to analyze.
 #' @param sigma0 Variance of the optical system readout noise
 #' @param offset Constant number that depends on the optical system configuration. Signal values smaller that the offset should be considered zero.
 #' @param S Proportionality factor S. Indicates the ratio between the amount inicident photons in the detector and those converted to an electronic signal.
-#' @param wSigma Time window at which the running average is calculated
+#' @param w Time window at which the running average is calculated
 #' @details
 #' The Number and Brightness (N&B) method is a time-independent technique that provides an estimate of molecular concentration and aggregation state (or stoichiometry), based on the statistical moments of the fluorescence intensity fluctuations. In other words, this tool allows to distinguish between two or more homo-oligomeric states of a molecule present in a given region in the sample (Brightness) while also providing a direct indicator of the molecules relative abundance (Number).
 #' The intensity of the fluorescence signal is mostly due to the mere presence of fluorophores in the media, affected by the fluorophore quantum yield, the sensitivity of the detector and the photophysical characteristics of the optical instrumentation.
@@ -20,7 +20,7 @@
 #' @importFrom stats var
 #' @importFrom graphics axis mtext par
 #' @return A list containing two vectors, the Brightness and the Number of the image.
-#' @author Raul Pinto Camara.
+#' @author Raúl Pinto Cámara.
 #' 
 #' @seealso \code{\link{var}, \link{mean}}
 #' @examples
@@ -34,52 +34,20 @@
 #' # to a population of Venus dimers and hexamers diffusing in HEK-293 cells.
 #' # Use the readFileTiff() function to extract the information from the '.tiff' files.
 #' 
-#' # rawtif <- "<path>/V2V6.tif"
-#' 
-#' V2V6 <- readFileTiff(rawtif)
-#' V2V6 <- V2V6[,,1]
-#' 
-#' # To compute the apparent Number and Brightness with the nbline() function, type:
-#' 
-#' nbv2v6 <- nbline(V2V6)
+#' nbv2 <- nbline(V2)
 #' pixelSize = 0.05
-#' r<- (1:dim(V2V6)[1])*pixelSize
-#' par(mar = c(5, 5, 3, 5))
-#' plot(nbv2v6$B~r, type = "l", col = "blue", axes = F, ann = F)
-#' mtext(side = 2, text = axTicks(2), at = axTicks(2), col = "blue", line = 1, las = 1)
-#' mtext(side = 2, text = "B", line = 3, col = "blue", las = 1)
-#' axis(1)
-#' mtext(side = 1, text = expression(r(mu*m)), line = 3, las = 1)
-#' par(new = T)
-#' plot(nbv2v6$N, type = "l", col = "red", axes = F, ann = F)
-#' mtext(side = 4, text = axTicks(4), at = axTicks(4), col = "red", line = 1, las = 1)
-#' mtext(side = 4, text = "N", line = 3, col = "red", las = 1)
-#'
-#' ### To compute the real Number $n$ and Brightness $e$ type:
-#' 
-#' par(mar = c(5, 5, 3, 5))
-#' nbv2v6 <- nbline(img = V2V6, S=3.5, sigma0 = 1,offset = 0)
-#' plot(nbv2v6$epsilon~r, type = "l", ylim = c(0,3), col = "blue", axes = F, ann = F)
-#' mtext(side = 2, text = axTicks(2), at = axTicks(2), col = "blue", line = 1, las = 1)
-#' mtext(side = 2, text = expression(epsilon), line = 3, col = "blue", las = 1)
-#' axis(1)
-#' mtext(side = 1, text = expression(r(mu*m)), line = 3, las = 1)
-#' par(new = T)
-#' plot(nbv2v6$n, type = "l", col = "red", ylim = c(0,30), axes = F, ann = F)
-#' mtext(side = 4, text = axTicks(4), at = axTicks(4), col = "red", line = 1, las = 1)
-#' mtext(side = 4, text = "n", line = 3, col = "red", las = 1)
+#' r<- (1:dim(V2)[1])*pixelSize
 #' }
 
 
-nbline<-function (img, sigma0 = 0, offset = 0, S = 1, wSigma = 0) 
-{
-  w<-floor(wSigma/2 -0.5)
+nbline <- function(img, sigma0 = 0, offset = 0, S = 1, w = 0){
+  w <- floor(w)
   di <- dim(img)
   if (length(di) != 2) {
     stop("'img' must be two dimensional")
   }
   mn<-vr<-NULL
-  if(wSigma == 0){
+  if(w == 0){
     mn <- apply(img, MARGIN = 1, mean, na.rm = T)
     vr <- apply(img, MARGIN = 1, var, na.rm = T)
   } else{
@@ -91,10 +59,10 @@ nbline<-function (img, sigma0 = 0, offset = 0, S = 1, wSigma = 0)
   if(S == 1){
     B <- vr/mn
     N <- (mn^2)/vr
-    return(list(Brightness = B, ApparentNumber = N))
+    return(list(AppNumber = N, AppBrightness = B))
   } else{
     epsilon <- (vr -sigma0 -S*(mn - offset))/(S*(mn - offset))
     n <-  ((mn - offset)^2)/(vr -sigma0 -S*(mn - offset))
-    return(list(brightness = epsilon, number = n))
+    return(list(RealNumber = n, RealBrightness = epsilon))
   }
 }

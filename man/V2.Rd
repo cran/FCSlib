@@ -3,9 +3,9 @@
 \docType{data}
 \name{V2}
 \alias{V2}
-\title{Experimental data of Venus dimers dynamics in HEK-293 cells.}
+\title{Line-scan data of HEK-293 cells expressing Venus (EYFP) dimers}
 \format{
-A data frame with 64 rows and 25000 columns
+A matrix with 64 rows and 25000 columns
 }
 \usage{
 data(V2)
@@ -18,6 +18,6 @@ Fluorescence excitation was provided by a 488 nm laser at 0.1% power.
 Fluorescence intensity data was collected using the photon-counting mode in an Olympus FV1000 Upright BX61WI confocal microscope.
 }
 \details{
-In order to use the data in pcfData, the data.matrix() must be used to transform the data set into a matrix, and can be used in the examples.
+To analyze this data set with FCSlib, import by typing: readFileTiff("V2.tif")[,,1]
 }
 \keyword{datasets}

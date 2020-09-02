@@ -1,22 +1,21 @@
 Package: FCSlib
 Type: Package
-Title: A Collection of Fluorescence Fluctuation Spectroscopy Methods
-Version: 1.1.1
-Date: 2020-08-06
-Author: Raul Pinto Camara, Adan Guerrero.
-Maintainer: Raul Pinto Camara <vasto.lorde.rp@gmail.com>
+Title: A Collection of Fluorescence Fluctuation Spectroscopy Analysis
+        Methods
+Version: 1.2.0
+Date: 2020-09-01
+Author: Raúl Pinto Cámara, Adan Guerrero, Alejandro Linares, José Damián Martínez Reyes, Haydee Hernández.
+Maintainer: Raúl Pinto Cámara <support.fcslib@mail.ibt.unam.mx>
 Description: 
-    A set of tools for fluorescence fluctuation spectroscopy data analysis performance is provided in this package.
-    It includes techniques such as single-point fluorescence correlation spectroscopy, autocorrelation and pair correlation functions, number & brightness (raster line scan) and a novel, recently developed method by Hinde and co-workers, pair correlation of molecular brightness (doi:10.1038/ncomms11047).
-    A set of simulations and real experimental data is used for the examples of each function provided in this package.
-    For an in-depth description of the basics behind each function here included and a detailed step-by-step guide on how to use them on your own data, please refer to the Supplementary Material file provided at (<https://github.com/RPintoC/FCSlib>).
+    This is a package for fluorescence fluctuation spectroscopy data analysis methods such as spFCS, FCCS, scanning-FCS, pCF, N&B and pCOMB, among others.
+    In addition, several data detrending tools are provided. For an extensive user's guide for the use of FCSlib, please navigate to (<https://github.com/FCSlib/FCSlib/tree/master/Documentation>).
+    Sample data can be found at (<https://github.com/FCSlib/FCSlib/tree/master/Sample%20Data>).
 License: GPL-3
-Depends: R(>= 3.5.0), tiff, stringr
-Suggests: fields
-RoxygenNote: 7.1.0
+Depends: R(>= 3.6.0), tiff, stringr, bitops, fields
+RoxygenNote: 7.1.1
 Encoding: UTF-8
 LazyData: true
 NeedsCompilation: no
-Packaged: 2020-08-06 14:53:45 UTC; raul_
+Packaged: 2020-09-01 19:23:32 UTC; raul_
 Repository: CRAN
-Date/Publication: 2020-08-06 15:02:08 UTC
+Date/Publication: 2020-09-02 06:50:47 UTC

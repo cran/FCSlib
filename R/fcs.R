@@ -2,7 +2,7 @@
 #' 
 #' @description Calculates either the auto-correlation or cross-correlation between vectors x and y, returning a correlation function.
 #' @aliases fcs
-#' @usage fcs(x , y = NULL, nPoints = 25000, pcf = FALSE)
+#' @usage fcs(x , y = NULL, nPoints, pcf = FALSE)
 #' @param x Numeric vector of length N.
 #' @param y Numeric vector of length N.
 #' @param nPoints The size of the sub-vectors in which the input vectors will be divided. This number must be less than N/2.
@@ -21,7 +21,7 @@
 #' @return A numeric vector G containing either the autocorrelation for the input vector x, or the cross-correlation between x and y vectors, with a length of nPoints.
 #' @references R.A. Migueles-Ramirez, A.G. Velasco-Felix, R. Pinto-Cámara, C.D. Wood, A. Guerrero. Fluorescence fluctuation spectroscopy in living cells.
 #' Microscopy and imaging science: practical approaches to applied research and education, 138-151,2017.
-#' @author Raul Pinto Camara, Adan O. Guerrero
+#' @author Raúl Pinto Cámara, Adan O. Guerrero
 #' 
 #' @seealso \code{\link{gcf}}
 #' 
@@ -59,7 +59,7 @@
 #' # Once all the sub-vectors are analyzed, these are then averaged.
 #' # To use the fcs() function type
 #' 
-#' g <- fcs(x = Cy5$f)
+#' g <- fcs(x = Cy5$f, nPoints = length(Cy5$f)/2)
 #' 
 #' # The result of the function is assigned to the variable 'g',
 #' # which contains the autocorrelation curve
@@ -88,9 +88,12 @@
 #' plot(G, log = "x", type = "l", xlab = expression(tau(s)), ylab = expression(G(tau)), main = "Cy5")
 #' }
 
-fcs <- function(x , y = NULL, nPoints = 25000, pcf = FALSE){
+fcs <- function(x , y = NULL, nPoints, pcf = FALSE){
   if(is.null(y)){
     y = x
+  }
+  if(!is.numeric(nPoints)){
+    stop("nPoints must be a numeric type")
   }
   nPointsint = nPoints*2
   if(!(is.vector(x)&&is.vector(y))){

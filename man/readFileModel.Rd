@@ -27,5 +27,5 @@ modelData <- readFileModel(filename)
 \code{\link{fitFCS}}
 }
 \author{
-Raul Pinto Camara.
+Raúl Pinto Cámara.
 }

@@ -7,7 +7,7 @@
 #' @details Read a FCS file using the scan function and extract the data contained in the file.
 #' @export
 #' @return dataList   A list containing the data sets within the file.
-#' @author Raul Pinto Camara.
+#' @author Raúl Pinto Cámara.
 #' 
 #' @examples
 #' \donttest{

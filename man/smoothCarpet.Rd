@@ -42,5 +42,5 @@ sC <- smoothCarpet(img = nbv2$number, dfV = 5, dfH = 5)
 \code{\link{pcomb}, \link{smooth.spline}}
 }
 \author{
-Raul Pinto Camara.
+Raúl Pinto Cámara.
 }

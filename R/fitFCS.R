@@ -3,13 +3,13 @@
 #' @description Estimates the parameters based on a given equation, on the data generated with the fcs() function.
 #' @aliases fitFCS
 #' @usage fitFCS(data = parent.frame(), start, low = -Inf, up = Inf,
-#'               type = "D3D",model = NULL, trace = TRUE)
+#'               type = "D3D", model = NULL, trace = TRUE)
 #' @param data data frame in which to evaluate the variables in formula and weights.
 #' @param start a named list or named numeric vector of starting estimates.
 #' @param low,up a named list or named numeric vector of lower and upper bounds, replicated to be as long as start. If unspecified, all parameters are assumed to be -Inf and Inf.
 #' @param type specification for the equation to model, is a character string. The default value is "D3D" equation for three-dimensional free diffusion.
 #' Another possibles values are: "D2D" for two-dimensional free diffusion,  "D2DT" for two-dimensional free diffusion with triplet exited state, and "D3DT" for three-dimensional free diffusion with triplet exited state
-#' and "Custom" that allow to send a customized equation to model.
+#' and D3D2S for two species in three-dimensional free diffusion.
 #' @param model a character type variable, that must contain the custom equation if needed, NULL by default.
 #' @param trace logical value that indicates whether the progress of the non-linear regression (nls) should be printed.
 #' @details A transport model, containing physical information about the diffusive nature of the fluorophores, can be fitted to the autocorrelation data to obtain parameters such as the diffusion coeficient D and the number of molecules within the observation volume N.
@@ -29,7 +29,7 @@
 #' @export
 #' @importFrom stats nls formula
 #' @return A nls object (from nls).
-#' @author Raul Pinto Camara
+#' @author Raúl Pinto Cámara.
 #' 
 #' @seealso \code{\link{nls}}, \code{\link{fcs}}
 #' 
@@ -39,7 +39,7 @@
 #' 
 #' library(FCSlib)
 #' 
-#' g <- fcs(x = Cy5_100nM$f,nPoints = 2048)
+#' g <- fcs(x = Cy5$f,nPoints = 2048)
 #' len <- 1:length(g)
 #' tau <-Cy5_100nM$t[len]
 #' G<-data.frame(tau,g)
@@ -102,16 +102,17 @@ fitFCS <- function(data = parent.frame(), start, low = -Inf, up = Inf, type = "D
   D2DT <- paste(GTrip, "*", D2D)
   D3D <- "((G0) * ((1 + ((4 * D * tau)/(s ^ 2))) ^ (-1)) * ((1 + ((4 * D * tau)/((k^2) * (s^2)))) ^ (-1 / 2)))"
   D3DT <- paste(GTrip, "*", D3D)
-  list_type <- list("D2D", "D2DT", "D3D", "D3DT"); list_model <- list(D2D, D2DT, D3D, D3DT)
+  D3D2S <- "(G0) * (((Y) * ((1 + ((4 * D1 * tau)/(s ^ 2))) ^ (-1)) * ((1 + ((4 * D1 * tau)/((k^2) * (s^2)))) ^ (-1 / 2))) + ((1 - Y) * ((1 + ((4 * D2 * tau)/(s ^ 2))) ^ (-1)) * ((1 + ((4 * D2 * tau)/((k^2) * (s^2)))) ^ (-1 / 2))))"
+  list_type <- list("D2D", "D2DT", "D3D", "D3DT", "D3D2S"); list_model <- list(D2D, D2DT, D3D, D3DT, D3D2S)
   if(!is.null(model)){
     if(!is.character(model)){
-      stop("'model' must be a character type variable")
+      stop("'model' must be a character string")
     }
   } else{
     if(!type %in% list_type){
       stop(paste("The model", type, "does not exist"))
     } else{
-      typePosList <- which(list_type == type); model <- paste("g ~ ", list_model[[typePosList]], sep = "")
+      typePosList <- which(list_type == type); model <- paste("g ~ ", list_model[[typePosList]], " + c", sep = "")
     }
   }
   express <- formula(model)

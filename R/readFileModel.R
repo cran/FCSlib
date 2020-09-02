@@ -8,7 +8,7 @@
 #' @export
 #' @import stringr
 #' @return params   A list containing the parameters as well as the model.
-#' @author Raul Pinto Camara.
+#' @author Raúl Pinto Cámara.
 #' 
 #' @seealso \code{\link{fitFCS}}
 #' 

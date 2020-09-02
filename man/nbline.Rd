@@ -4,7 +4,7 @@
 \alias{nbline}
 \title{Number & Brightness (Single Image)}
 \usage{
-nbline(img, sigma0 = 0, offset = 0, S = 1, wSigma = 0)
+nbline(img, sigma0 = 0, offset = 0, S = 1, w = 0)
 }
 \arguments{
 \item{img}{The image to analyze.}
@@ -15,7 +15,7 @@ nbline(img, sigma0 = 0, offset = 0, S = 1, wSigma = 0)
 
 \item{S}{Proportionality factor S. Indicates the ratio between the amount inicident photons in the detector and those converted to an electronic signal.}
 
-\item{wSigma}{Time window at which the running average is calculated}
+\item{w}{Time window at which the running average is calculated}
 }
 \value{
 A list containing two vectors, the Brightness and the Number of the image.
@@ -42,45 +42,14 @@ library(FCSlib)
 # to a population of Venus dimers and hexamers diffusing in HEK-293 cells.
 # Use the readFileTiff() function to extract the information from the '.tiff' files.
 
-# rawtif <- "<path>/V2V6.tif"
-
-V2V6 <- readFileTiff(rawtif)
-V2V6 <- V2V6[,,1]
-
-# To compute the apparent Number and Brightness with the nbline() function, type:
-
-nbv2v6 <- nbline(V2V6)
+nbv2 <- nbline(V2)
 pixelSize = 0.05
-r<- (1:dim(V2V6)[1])*pixelSize
-par(mar = c(5, 5, 3, 5))
-plot(nbv2v6$B~r, type = "l", col = "blue", axes = F, ann = F)
-mtext(side = 2, text = axTicks(2), at = axTicks(2), col = "blue", line = 1, las = 1)
-mtext(side = 2, text = "B", line = 3, col = "blue", las = 1)
-axis(1)
-mtext(side = 1, text = expression(r(mu*m)), line = 3, las = 1)
-par(new = T)
-plot(nbv2v6$N, type = "l", col = "red", axes = F, ann = F)
-mtext(side = 4, text = axTicks(4), at = axTicks(4), col = "red", line = 1, las = 1)
-mtext(side = 4, text = "N", line = 3, col = "red", las = 1)
-
-### To compute the real Number $n$ and Brightness $e$ type:
-
-par(mar = c(5, 5, 3, 5))
-nbv2v6 <- nbline(img = V2V6, S=3.5, sigma0 = 1,offset = 0)
-plot(nbv2v6$epsilon~r, type = "l", ylim = c(0,3), col = "blue", axes = F, ann = F)
-mtext(side = 2, text = axTicks(2), at = axTicks(2), col = "blue", line = 1, las = 1)
-mtext(side = 2, text = expression(epsilon), line = 3, col = "blue", las = 1)
-axis(1)
-mtext(side = 1, text = expression(r(mu*m)), line = 3, las = 1)
-par(new = T)
-plot(nbv2v6$n, type = "l", col = "red", ylim = c(0,30), axes = F, ann = F)
-mtext(side = 4, text = axTicks(4), at = axTicks(4), col = "red", line = 1, las = 1)
-mtext(side = 4, text = "n", line = 3, col = "red", las = 1)
+r<- (1:dim(V2)[1])*pixelSize
 }
 }
 \seealso{
 \code{\link{var}, \link{mean}}
 }
 \author{
-Raul Pinto Camara.
+Raúl Pinto Cámara.
 }

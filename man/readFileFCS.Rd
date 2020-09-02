@@ -24,5 +24,5 @@ raw_fcs <- readFileFCS(FileName)
 }
 }
 \author{
-Raul Pinto Camara.
+Raúl Pinto Cámara.
 }
