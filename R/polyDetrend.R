@@ -36,7 +36,7 @@ polyDetrend <- function(f, acqTime, nIntervals, degree = 3, plot = TRUE){
   a <- binTimeSeries(f, acqTime, nIntervals, plot = F)
   model <- lm(a$Counts~poly(a$Time, degree = degree))
   residuals <- model$residuals + model$fitted.values[1]
-  t <- (1:length(f))*4e-6
+  t <- (1:length(f))*acqTime
   full.model <- lm(f~poly(t, degree = degree))
   full.residuals <- full.model$residuals + max(model$fitted.values)
   b <- binTimeSeries(full.residuals, acqTime, nIntervals, plot = F)
