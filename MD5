@@ -1,12 +1,11 @@
-7970ff78363327a94dbe354bb70adb7f *DESCRIPTION
-d9ec5474d98572affee858b31e091df4 *NAMESPACE
+51f245c1442a1dba1fe4c65139f02e04 *DESCRIPTION
+7611820bf8dbf3d940846dfc3c6f8c2c *NAMESPACE
 d49b59e9d7e0821a8a595956be4ab604 *R/Cy5.R
 980f12c82cf1c53c43b1b3f9abd4f63c *R/V2.R
 bb44278e0d8a9397586c1338bdaaaa2f *R/asynACTCSPC.R
 d040989c26884e1d0ad2f976906d9948 *R/binMatrix.R
 9333fac6ef119c6922cc20fe8cff6886 *R/binTimeSeries.R
-010b0321cad844277cc1555959460bfa *R/boxcarDetrend.R
-e82224a7b4412d45f8eec1d7d46fa8a0 *R/expDetrend.R
+55facdcb8a196d1405e5b2739483e48e *R/detrendTimeSeries.R
 43f092e8ebe628f1c93f84c5285a2144 *R/fcs.R
 b720b7e636c69d899bbf8765b8033b6d *R/fitFCS.R
 48b9f8f61028018498679562ed872e3f *R/gcf.R
@@ -14,7 +13,6 @@ b720b7e636c69d899bbf8765b8033b6d *R/fitFCS.R
 16d6e2141e13c46a0b723c11f510c439 *R/norm.vector.R
 4c0bb3d869d979ce2c88890ef4d5eda4 *R/pcf.R
 105e1758eee5ed9cf396c70ccf741e10 *R/pcomb.R
-1972955c794f2ef1359d5579f24e2d24 *R/polyDetrend.R
 94ccf1e94b0374d8f74338f339ebe4a8 *R/readFileFcs.R
 31e8c45c8d51a9be533e2ecc01979deb *R/readFileModel.R
 a8a1861747a7734cfea6511018be2112 *R/readFileSPC.R
@@ -31,8 +29,7 @@ e11d97193d48fb67c450f665699b0be0 *R/writeFileTiff.R
 d1271aef372f87069ccf14617efb66f1 *man/asynACTCSPC.Rd
 0e6b5227d71fdb6b0997c75a99a3db83 *man/binMatrix.Rd
 6520df01465ac4cb899f62595597adc8 *man/binTimeSeries.Rd
-6308558cc2770e9ff4f25746feb4a7ba *man/boxcarDetrend.Rd
-6ec191b606b3b097eea64ef95b74c8f6 *man/expDetrend.Rd
+4005735168017d554b19be6f06eb7aac *man/detrendTimeSeries.Rd
 5c617efed0ab64ebe41fad10db067344 *man/fcs.Rd
 9960def3b166fc74fab8e17f26e02371 *man/fitFCS.Rd
 b87f62169be7154c020eed3a8dbe6e0e *man/gcf.Rd
@@ -40,7 +37,6 @@ b87f62169be7154c020eed3a8dbe6e0e *man/gcf.Rd
 148ce2aa3832f82e19df02ecbeb6f28e *man/norm.vector.Rd
 52c3913bc48b77c4f57668ef8ed30431 *man/pcf.Rd
 812907ba7c6f82a97a8e9dad6580f7d2 *man/pcomb.Rd
-933a51de39100f3e72e7e7a24eba78b1 *man/polyDetrend.Rd
 f8ed231f7c0bf17e482816e149c7d8ae *man/readFileFCS.Rd
 7a4e2977f75b2aa8c278defbcf2b540f *man/readFileModel.Rd
 75743583c72327e36577a39ca9ff53b0 *man/readFileSPC.Rd
